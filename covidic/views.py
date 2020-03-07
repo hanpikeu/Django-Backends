@@ -1,12 +1,9 @@
-from django.shortcuts import render
-from django.views.generic import UpdateView, View
-from django.views.defaults import bad_request
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.defaults import bad_request
+from django.views.generic import View
 
 from .models import Account
-
-from functools import wraps
 
 
 def authenticate(request):
@@ -24,12 +21,13 @@ def login_required(func=None):
     장고에서 제공하는 login_required 함수를 재정의합니다.
     인증여부를 판단하는 과정에서 authenticate 함수도 별도로 정의합니다.
     '''
+
     def _wrapped_view(request, *args, **kwargs):
         if authenticate(request):
             return func(request, *args, **kwargs)  # 인증되면 원래 함수 실행
         else:
             return render(request, 'covidic/login_required.html', context={})  # 인증 안되면 인증요구 페이지로 이동
-    
+
     return _wrapped_view
 
 
@@ -37,6 +35,7 @@ class MainView(View):
     '''
     메인 홈페이지 view
     '''
+
     def get(self, request):
         if request.session.get('token'):
             is_auth = True
@@ -51,6 +50,7 @@ class LoginView(View):
     '''
     GET query로 token값을 받아 db와 비교 후 인증하는 view
     '''
+
     def get(self, request):
         success_url = redirect(reverse('covidic:main'))
 
@@ -85,5 +85,6 @@ class Test(View):
     인증이 필요한 view에서 작동되는지 테스트를 위한 view
     브라우저에 'hello'가 뜨면 정상
     '''
+
     def get(self, request):
         return render(request, 'covidic/test.html')

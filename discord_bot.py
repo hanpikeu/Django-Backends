@@ -1,5 +1,5 @@
 import os
-import discord
+
 import discord.utils
 
 client = discord.Client()
@@ -16,5 +16,6 @@ async def on_message(msg: discord.Message):
         if msg.content in ['!로그인', '!로긴']:
             print(msg.author)
             await msg.author.send("이 글이 보이시면 말 해주세요.")
+
 
 client.run(os.getenv('BOT_TOKEN'))
