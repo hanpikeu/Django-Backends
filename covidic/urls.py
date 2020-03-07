@@ -3,7 +3,7 @@ from . import views
 from .views import login_required
 
 
-app_name = 'account_manager'
+app_name = 'covidic'
 urlpatterns = [
     path('', views.MainView.as_view(), name='main'),
     path('autologin/', views.LoginView.as_view(), name='autologin'),
