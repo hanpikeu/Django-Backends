@@ -2,13 +2,11 @@ from django.shortcuts import render
 from django.views.generic import UpdateView, View
 from django.views.defaults import bad_request
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from .models import Account
 
 from functools import wraps
-import secrets
 
 
 def authenticate(request):
@@ -30,7 +28,7 @@ def login_required(func=None):
         if authenticate(request):
             return func(request, *args, **kwargs)  # 인증되면 원래 함수 실행
         else:
-            return render(request, 'account_manager/login_required.html', context={})  # 인증 안되면 인증요구 페이지로 이동
+            return render(request, 'covidic/login_required.html', context={})  # 인증 안되면 인증요구 페이지로 이동
     
     return _wrapped_view
 
@@ -54,11 +52,11 @@ class LoginView(View):
     GET query로 token값을 받아 db와 비교 후 인증하는 view
     '''
     def get(self, request):
-        success_url = redirect(reverse('account_manager:main'))
+        success_url = redirect(reverse('covidic:main'))
 
         # 쿠키와 세션으로 인증되면 token 인증 무시
         if authenticate(request):
-            # return render(request, 'account_manager/autologin.html', context={})
+            # return render(request, 'covidic/autologin.html', context={})
             return success_url
 
         else:
@@ -88,4 +86,4 @@ class Test(View):
     브라우저에 'hello'가 뜨면 정상
     '''
     def get(self, request):
-        return render(request, 'account_manager/test.html')
+        return render(request, 'covidic/test.html')

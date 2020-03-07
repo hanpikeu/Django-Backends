@@ -1,4 +1,7 @@
+from django.utils.translation import ugettext_lazy as _
+
 import os
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -8,21 +11,28 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.0.8', 'localhost', 'china-gate.iptime.org']
 
-# Application definition
 
-INSTALLED_APPS = [
+# Application definition
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'covidic',
 ]
+
+PROJECT_APPS = [
+    'covidic.apps.CovidicConfig',
+]
+
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -77,6 +87,15 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'ko-kr'
+LANGUAGES = [
+    ('ko', _('Korean')),
+    ('en', _('English')),
+    ('cn', _('Chinese')),
+]
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
+
 TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 USE_L10N = True
