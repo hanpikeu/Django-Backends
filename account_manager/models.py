@@ -1,18 +1,23 @@
+import uuid
+
 from django.db import models
+
 
 class Account(models.Model):
     account_id = models.AutoField(primary_key=True)
-    discord_userid = models.BigIntegerField()
+    discord_id = models.BigIntegerField()
     is_able = models.BooleanField()
 
     created_time = models.DateTimeField(auto_now_add=True)
-    modified_time= models.DateTimeField(auto_now=True)
-    
-    token = models.CharField(max_length=36)
+    modified_time = models.DateTimeField(auto_now=True)
+
+    token = models.UUIDField(default=uuid.uuid1)
     token_create_time = models.DateTimeField()
 
     class Meta:
         db_table = 'accounts'
+        unique_together = ['discord_id']
+
 
 class TimelineDate(models.Model):
     date_id = models.AutoField(primary_key=True)
@@ -20,6 +25,8 @@ class TimelineDate(models.Model):
 
     class Meta:
         db_table = 'timeline_dates'
+        unique_together = ['date']
+
 
 class TimelineAccident(models.Model):
     accident_id = models.AutoField(primary_key=True)
@@ -33,51 +40,59 @@ class TimelineAccident(models.Model):
 
     typeof = models.CharField(max_length=1, choices=ACCIDENT_TYPES)
     title = models.CharField(max_length=128)
-    link = models.CharField(max_length=1024)
+    link = models.URLField(max_length=200)
 
     class Meta:
         db_table = 'timeline_accidents'
+        unique_together = ['typeof', 'title']
 
-class TagOfArhive(models.Model):
-    tag_of_arhive_id = models.AutoField(primary_key=True)
+
+class TagOfArchive(models.Model):
+    tag_of_archive_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=32)
 
     class Meta:
-        db_table = 'tags_of_arhive'
+        db_table = 'tags_of_archive'
+        unique_together = ['name']
 
-class Arhive(models.Model):
-    ACHIVE_TYPE = [
+
+class Archive(models.Model):
+    ARCHIVE_TYPE = [
         ('I', 'IMGUR'),
-        ('A', 'ARHIVE'),
+        ('A', 'ARCHIVE'),
     ]
-    typeof = models.CharField(max_length=1, choices=ACHIVE_TYPE)
-    arhive_id = models.AutoField(primary_key=True)
+    typeof = models.CharField(max_length=1, choices=ARCHIVE_TYPE)
+    archive_id = models.AutoField(primary_key=True)
     tags = models.TextField()
+    link = models.URLField(max_length=200)
 
     class Meta:
-        db_table = 'arhives'
+        db_table = 'archives'
+        unique_together = ['link']
+
 
 class Thread(models.Model):
     thread_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=32)
-    
+
     create_user = models.ForeignKey(
         'Account',
-        on_delete = models.SET_NULL,
-        null = True,
+        on_delete=models.SET_NULL,
+        null=True,
     )
-    created_time  = models.DateTimeField(auto_now_add=True)
+    created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'threads'
 
+
 class ThreadItem(models.Model):
     thread_item_id = models.AutoField(primary_key=True)
 
     content = models.ForeignKey(
-        'Arhive',
-        on_delete = models.PROTECT
+        'Archive',
+        on_delete=models.PROTECT
     )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
@@ -85,29 +100,33 @@ class ThreadItem(models.Model):
     class Meta:
         db_table = 'thread_items'
 
+
 class Log(models.Model):
     LOG_TYPE = [
-            ('A-N', 'Add news'),
-            ('A-T', 'Add timeline'),
-            ('U-T', 'Update timeline'),
-            ('TC-', 'Token Create'),
-            ('A-C', 'Arhive Create'),
-            ('T-C', 'Thread Create'),
-            ('TIC', 'Thread Item Create'),
-            ('ATC', 'Arhive Tag Chanage'),
+        ('A-N', 'Add news'),
+        ('A-T', 'Add timeline'),
+        ('U-T', 'Update timeline'),
+        ('TC-', 'Token Create'),
+        ('A-C', 'Archive Create'),
+        ('T-C', 'Thread Create'),
+        ('TIC', 'Thread Item Create'),
+        ('ATC', 'Archive Tag Change'),
     ]
 
     typeof = models.CharField(max_length=3, choices=LOG_TYPE)
     desc = models.CharField(max_length=255)
     log_time = models.DateTimeField(auto_now_add=True)
+    log_id = models.AutoField(primary_key=True)
 
     class Meta:
         db_table = 'logs'
 
+
 class News(models.Model):
     news_id = models.AutoField(primary_key=True)
-    link = models.CharField(max_length=1024)
+    link = models.URLField(max_length=200)
     title = models.CharField(max_length=128)
-    
+
     class Meta:
         db_table = 'newses'
+        unique_together = ['link']
