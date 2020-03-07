@@ -84,7 +84,7 @@ class Migration(migrations.Migration):
                 ('thread_item_id', models.AutoField(primary_key=True, serialize=False)),
                 ('created_time', models.DateTimeField(auto_now_add=True)),
                 ('modified_time', models.DateTimeField(auto_now=True)),
-                ('content', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='account_manager.Archive')),
+                ('content', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='covidic.Archive')),
             ],
             options={
                 'db_table': 'thread_items',
@@ -97,7 +97,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=32)),
                 ('created_time', models.DateTimeField(auto_now_add=True)),
                 ('modified_time', models.DateTimeField(auto_now=True)),
-                ('create_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='account_manager.Account')),
+                ('create_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='covidic.Account')),
             ],
             options={
                 'db_table': 'threads',

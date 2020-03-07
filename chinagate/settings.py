@@ -8,7 +8,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.0.8', 'localhost', 'china-gate.iptime.org']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -18,7 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account_manager',
+    'covidic',
 ]
 
 MIDDLEWARE = [
@@ -54,11 +53,11 @@ WSGI_APPLICATION = 'chinagate.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':     os.getenv('DATABASE_SCHEMA'),
-        'USER':     os.getenv('DATABASE_USER'),
+        'NAME': os.getenv('DATABASE_SCHEMA'),
+        'USER': os.getenv('DATABASE_USER'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST':     os.getenv('DATABASE_HOST'),
-        'PORT':     os.getenv('DATABASE_PORT'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
