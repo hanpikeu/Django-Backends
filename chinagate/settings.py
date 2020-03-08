@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.8', 'localhost', 'china-gate.iptime.org']
+ALLOWED_HOSTS = ['192.168.0.8', '127.0.0.1', 'localhost', 'china-gate.iptime.org']
 
 # Application definition
 DJANGO_APPS = [
@@ -22,6 +22,8 @@ DJANGO_APPS = [
 
 PROJECT_APPS = [
     'covidic.apps.CovidicConfig',
+    'account_manager.apps.AccountManagerConfig',
+    'notik.apps.NotikConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS

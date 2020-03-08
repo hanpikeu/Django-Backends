@@ -1,5 +1,5 @@
 from django.urls import path
 
-app_name = 'covidic'
+app_name = 'notik'
 
 urlpatterns = []
