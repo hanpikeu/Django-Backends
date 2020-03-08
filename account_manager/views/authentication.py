@@ -43,7 +43,7 @@ def login_required(func=None):
         if verify_token(request.session.get('token')):
             return func(request, *args, **kwargs)  # 인증되면 원래 함수 실행
         else:
-            return render(request, 'covidic/login_required.html')  # 인증 안되면 인증요구 페이지로 이동
+            return render(request, 'account_manager/token_expired.html')  # 인증 안되면 인증요구 페이지로 이동
 
     return _wrapped_view
 
@@ -106,4 +106,4 @@ class TestAuthView(View):
             is_auth = False
 
         context = {'is_auth': is_auth}
-        return render(request, 'covidic/test_auth.html', context)
+        return render(request, 'account_manager/test_auth.html', context)
