@@ -1,6 +1,7 @@
 import os
-
 import discord.utils
+from discord import DMChannel
+import requests
 
 client = discord.Client()
 
@@ -12,10 +13,16 @@ async def on_ready():
 
 @client.event
 async def on_message(msg: discord.Message):
-    if msg.channel.id == 683302727912390770:
+    if msg.channel.id == 683302727912390770 or type(msg.channel) is DMChannel:
         if msg.content in ['!로그인', '!로긴']:
-            print(msg.author)
-            await msg.author.send("이 글이 보이시면 말 해주세요.")
+            res = requests.get(f'http://127.0.0.1/set_token?discord_id={msg.author.id}')
+            if res.status_code == 200:
+                load = eval(res.content.decode('utf-8'))
+                await msg.author.send(load['link'])
+            elif res.status_code == 403:
+                await msg.author.send('권한이 부여되지 않았습니다. 개발팀에게 문의해주시길 바랍니다.')
+            elif res.status_code == 404:
+                await msg.author.send('목록에 없는 유저입니다. 개발팀에게 문의해주시길 바랍니다.')
 
 
 client.run(os.getenv('BOT_TOKEN'))
