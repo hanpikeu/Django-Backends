@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import *
+from account_manager.models.account import Account
 
 
 @admin.register(Account)
