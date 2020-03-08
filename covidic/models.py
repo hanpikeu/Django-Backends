@@ -128,7 +128,20 @@ class News(models.Model):
     news_id = models.AutoField(primary_key=True)
     link = models.URLField(max_length=200)
     title = models.CharField(max_length=128)
+    reaction = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'newses'
         unique_together = ['link']
+
+
+class NewsComments(models.Model):
+    link = models.URLField(max_length=200)
+    writer_id = models.CharField(max_length=128)
+    content = models.CharField(max_length=200)
+    hand_up = models.IntegerField(default=0)
+    hand_down = models.IntegerField(default=0)
+    reaction = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'news_comments'
