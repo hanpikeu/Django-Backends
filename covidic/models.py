@@ -79,6 +79,7 @@ class Thread(models.Model):
         'Account',
         on_delete=models.SET_NULL,
         null=True,
+        related_name="posts"
     )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
@@ -92,7 +93,8 @@ class ThreadItem(models.Model):
 
     content = models.ForeignKey(
         'Archive',
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        related_name='references'
     )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
