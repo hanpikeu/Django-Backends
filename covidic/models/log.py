@@ -13,10 +13,12 @@ class Log(models.Model):
         ('ATC', 'Archive Tag Change'),
     ]
 
-    typeof = models.CharField(max_length=3, choices=LOG_TYPE)
-    desc = models.CharField(max_length=255)
+    typeof = models.CharField(max_length=3, choices=LOG_TYPE, editable=False)
     log_time = models.DateTimeField(auto_now_add=True)
     log_id = models.AutoField(primary_key=True)
 
     class Meta:
         db_table = 'logs'
+
+    def __str__(self):
+        return 'Log (' + self.log_id + ') ' + self.typeof + ' ' + self.log_time

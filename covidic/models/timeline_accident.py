@@ -11,10 +11,26 @@ class TimelineAccident(models.Model):
         ('T', '국면 전환점'),
     ]
 
+    content = models.ForeignKey(
+        'Archive',
+        on_delete=models.PROTECT,
+        related_name='timeline_references'
+    )
+
+    date = models.ForeignKey(
+        'TimelineDate',
+        on_delete=models.PROTECT,
+        related_name='accidents'
+    )
+
     typeof = models.CharField(max_length=1, choices=ACCIDENT_TYPES)
-    title = models.CharField(max_length=128)
-    link = models.URLField(max_length=200)
+    title_en = models.CharField(max_length=256)
+    title_kr = models.CharField(max_length=128)
+    title_cn = models.CharField(max_length=128)
 
     class Meta:
         db_table = 'timeline_accidents'
-        unique_together = ['typeof', 'title']
+        unique_together = ['typeof', 'title_kr']
+
+    def __str__(self):
+        return "TimelineAccident " + str(self.title_kr)

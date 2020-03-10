@@ -14,3 +14,6 @@ class Archive(models.Model):
     class Meta:
         db_table = 'archives'
         unique_together = ['link']
+
+    def __str__(self):
+        return 'Archive (' + self.archive_id + ') ' + self.link
