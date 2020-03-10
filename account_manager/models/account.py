@@ -5,6 +5,7 @@ from django.db import models
 
 class Account(models.Model):
     account_id = models.AutoField(primary_key=True)
+    discord_name = models.CharField(max_length=32)
     discord_id = models.BigIntegerField()
     is_able = models.BooleanField()
 
@@ -13,6 +14,13 @@ class Account(models.Model):
 
     token = models.UUIDField(default=uuid.uuid1)
     token_create_time = models.DateTimeField()
+
+    def __str__(self):
+        text = "Account " + str(self.discord_name)
+        if not self.is_able:
+            text += ' - {is blocked} '
+        text += ' - ' + str(self.token_create_time)
+        return text
 
     class Meta:
         db_table = 'accounts'
