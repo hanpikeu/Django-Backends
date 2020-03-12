@@ -9,4 +9,4 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chinagate.settings')
 application = get_wsgi_application()
 
 if len(psutil.Process().children()) == 0:
-    subprocess.Popen('python discord_bot.py', shell=True)
+    subprocess.Popen('python3 discord_bot.py', shell=True)
