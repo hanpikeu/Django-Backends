@@ -13,7 +13,7 @@ def webhook(req: HttpRequest):
     if req.method != 'POST':
         return HttpResponse(status=405)
 
-    signature = req.GET['X-Hub-Signature']
+    signature = req.headers['X-Hub-Signature']
 
     if signature is None:
         return HttpResponse(status=403)
