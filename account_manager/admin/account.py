@@ -11,7 +11,7 @@ class AdminInterfaceAccount(admin.ModelAdmin):
 
     fieldsets = (
         ('Main', {
-            'fields': ('account_id', 'is_able', 'discord_id')
+            'fields': ('account_id', 'is_able', 'discord_name', 'discord_id')
         }),
         ('Log', {
             'fields': ('created_time', 'modified_time')
