@@ -22,7 +22,7 @@ def webhook(req: HttpRequest):
     if sha_name != 'sha1':
         return HttpResponse(status=501)
 
-    mac = hmac.new(os.getenv('WEBHOOK_SECRET'), msg=req.body, digestmod='sha1')
+    mac = hmac.new(os.getenv('WEBHOOK_SECRET').encode(), msg=req.body, digestmod='sha1')
 
     if not hmac.compare_digest(mac.hexdigest(), signature.encode()):
         return HttpResponse(status=403)
