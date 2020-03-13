@@ -1,4 +1,6 @@
 #!/bin/bash
-sudo git reset --hard
-sudo git fetch
-sudo git pull
+git reset --hard
+git fetch
+git pull
+source .venv/bin/activate
+python3 manage.py migrate
