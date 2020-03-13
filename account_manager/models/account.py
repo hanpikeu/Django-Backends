@@ -5,8 +5,8 @@ from django.db import models
 
 class Account(models.Model):
     account_id = models.AutoField(primary_key=True)
-    discord_name = models.CharField(max_length=32, editable=False)
-    discord_id = models.BigIntegerField(editable=False)
+    discord_name = models.CharField(max_length=32)
+    discord_id = models.BigIntegerField()
     is_able = models.BooleanField()
 
     created_time = models.DateTimeField(auto_now_add=True)
