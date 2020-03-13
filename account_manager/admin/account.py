@@ -7,7 +7,7 @@ from account_manager.models.account import Account
 class AdminInterfaceAccount(admin.ModelAdmin):
     readonly_fields = ['account_id', 'created_time', 'modified_time', 'token', 'token_create_time']
 
-    list_display = ['account_id', 'discord_id', 'is_able', 'token_create_time']
+    list_display = ['account_id', 'discord_name', 'discord_id', 'is_able', 'token_create_time']
 
     fieldsets = (
         ('Main', {
