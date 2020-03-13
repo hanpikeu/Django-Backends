@@ -9,7 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def webhook(req: HttpRequest):
-    print(req)
     if req.method != 'POST':
         return HttpResponse(status=405)
 
