@@ -24,5 +24,5 @@ class AdminInterfaceAccount(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         read_only_fields = ['account_id', 'created_time', 'modified_time', 'token', 'token_create_time']
         if obj is not None:
-            read_only_fields.append('discord_id')
+            read_only_fields.append('discord_name', 'discord_id')
         return read_only_fields
