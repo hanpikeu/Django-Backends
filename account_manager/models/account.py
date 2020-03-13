@@ -12,8 +12,8 @@ class Account(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
-    token = models.UUIDField(default=uuid.uuid1)
-    token_create_time = models.DateTimeField()
+    token = models.UUIDField(default=uuid.uuid1, null=True)
+    token_create_time = models.DateTimeField(null=True)
 
     def __str__(self):
         text = "Account " + str(self.discord_name)
