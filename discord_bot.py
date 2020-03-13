@@ -15,7 +15,7 @@ async def on_ready():
 async def on_message(msg: discord.Message):
     if msg.channel.id == 683302727912390770 or type(msg.channel) is DMChannel:
         if msg.content in ['!로그인', '!로긴']:
-            res = requests.get(f'http://127.0.0.1/set_token?discord_id={msg.author.id}')
+            res = requests.get(f'http://127.0.0.1:8000/set_token?discord_id={msg.author.id}')
             if res.status_code == 200:
                 load = eval(res.content.decode('utf-8'))
                 await msg.author.send(load['link'])

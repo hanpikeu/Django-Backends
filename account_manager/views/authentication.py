@@ -91,7 +91,7 @@ def set_token(request: HttpRequest):
     account.token_create_time = datetime.datetime.now()
     account.save()
 
-    return JsonResponse({'link': f'http://china-gate.iptime.org/get_cookie?token={token}'})
+    return JsonResponse({'link': f'https://china-gate.iptime.org/get_cookie?token={token}'})
 
 
 class TestAuthView(View):
