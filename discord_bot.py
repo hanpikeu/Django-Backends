@@ -30,3 +30,7 @@ async def on_message(msg: discord.Message):
 
 
 client.run(os.getenv('COVIDIC_BOT_TOKEN'))
+''' 
+To-Do
+Add Notik Discord bot
+'''
