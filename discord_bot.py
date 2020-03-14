@@ -2,6 +2,11 @@ import os
 import discord.utils
 from discord import DMChannel
 import requests
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 client = discord.Client()
 
