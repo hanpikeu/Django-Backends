@@ -1,3 +1,3 @@
 #!/bin/bash
-source .venv/bin/activate
-python3 manage.py runserver
+sudo bash service_manager/start_discord_bot.sh
+sudo bash service_manager/start_django.sh

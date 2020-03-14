@@ -1,11 +1,12 @@
 import hmac
 import json
 import os
-import subprocess
-import time
+import re
 
 from django.http import HttpRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
+pattern_migration = re.compile(r'^[^\/]*?\/migrations\/[^\/]*?\.py$')
 
 
 @csrf_exempt
@@ -35,13 +36,31 @@ def webhook(req: HttpRequest):
         if data["ref"] != "refs/heads/master":
             return HttpResponse(status=200)
 
-        if data["repository"]["html_url"] != "https://github.com/China-Gate/Django-Backends":
-            return HttpResponse(status=200)
+        if data["repository"]["html_url"] == "https://github.com/China-Gate/Django-Backends":
+            if data["pusher"]["email"] != "apple01644@gmail.com":
+                return HttpResponse(status=200)
 
-        if data["pusher"]["email"] != "apple01644@gmail.com":
-            return HttpResponse(status=200)
+            command = 'sudo bash service_manager/update_repo.sh'
+            need_migrate = False
+            need_update_discord = False
 
-        subprocess.Popen('sudo bash update.sh', shell=True)
-        return HttpResponse(status=202)
+            for commit in data["commits"]:
+                for new_file in commit["added"]:
+                    if len(pattern_migration.findall(new_file)) > 0:
+                        need_migrate = True
+                for change_file in commit["modified"]:
+                    if change_file == 'discord_bot.py':
+                        need_update_discord = True
+
+            if need_migrate:
+                command += ' -m'
+
+            if need_update_discord:
+                command += ' -d'
+
+            os.system(command)
+            return HttpResponse(status=202)
+
+        return HttpResponse(status=200)
     except Exception:
         return HttpResponse(status=500)
