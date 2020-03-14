@@ -1,3 +1,3 @@
 #!/bin/bash
-pid=`django.pid`
+pid=`cat django.pid`
 kill -2 $pid

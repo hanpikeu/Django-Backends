@@ -25,4 +25,4 @@ async def on_message(msg: discord.Message):
                 await msg.author.send('목록에 없는 유저입니다. 개발팀에게 문의해주시길 바랍니다.')
 
 
-client.run(os.getenv('BOT_TOKEN'))
+client.run(os.getenv('COVIDIC_BOT_TOKEN'))
