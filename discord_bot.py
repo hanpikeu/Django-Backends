@@ -4,7 +4,7 @@ import discord.utils
 import requests
 from discord import DMChannel
 from dotenv import load_dotenv
-#debuging
+
 load_dotenv()
 
 client = discord.Client()
