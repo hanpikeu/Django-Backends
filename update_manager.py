@@ -27,7 +27,6 @@ def webhook(req: HttpRequest):
     mac = hmac.new(os.getenv('WEBHOOK_SECRET').encode(), msg=req.body, digestmod='sha1')
 
     if not hmac.compare_digest(mac.hexdigest().encode(), signature.encode()):
-        time.sleep(0.5)
         return HttpResponse(status=403)
 
     try:
