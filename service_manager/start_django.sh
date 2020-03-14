@@ -1,4 +1,4 @@
 #!/bin/bash
 source .venv/bin/activate
-python3 manage.py runserver $
+python3 manage.py runserver &
 echo $! > django.pid
