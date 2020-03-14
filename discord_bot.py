@@ -1,10 +1,9 @@
-import discord.utils
 import os
-import requests
 
+import discord.utils
+import requests
 from discord import DMChannel
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
