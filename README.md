@@ -55,6 +55,7 @@ sudo mysql
 CREATE DATABASE {database_name};
 CREATE USER '{user_name}'@'localhost' IDENTIFIED BY '{pass_word}';
 GRANT USAGE ON {database_name}.* TO '{user_name}'@'localhost';
+GRANT INSERT, SELECT, UPDATE, DELETE ON {database_name}.* TO '{user_name}'@'localhost';
 ```
 
 #### Setup .env
