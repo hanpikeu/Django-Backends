@@ -50,7 +50,7 @@ class HotPostCrawler:
             for pair in HotPostCrawler.load():
                 if not (pair['link'] in self.staged_link):
                     try:
-                        await self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}')
+                        self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}')
                         self.staged_link.append(pair['link'])
                     except:
                         pass
