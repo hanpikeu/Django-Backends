@@ -39,7 +39,7 @@ class HotPostCrawler:
 
     def start(self):
         self.run = True
-        self.trd = threading.Thread(target=self.update, args=[self])
+        self.trd = threading.Thread(target=self.update, args=[])
         self.trd.setDaemon(True)
         self.trd.start()
 
