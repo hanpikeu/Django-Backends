@@ -60,7 +60,7 @@ class HotPostCrawler:
                 except Exception as e:
                     print(e)
 
-        asyncio.sleep(10)
+        await asyncio.sleep(10)
 
 
 hot_post_crawler = HotPostCrawler()
