@@ -21,8 +21,7 @@ class HotPostCrawler:
     def __init__(self):
         self.trd = None
         self.stage()
-        self.start()
-        self.channel = client.get_channel(682788528983506953)
+        self.channel = None
 
     @staticmethod
     def load():
@@ -74,6 +73,7 @@ hot_post_crawler = HotPostCrawler()
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
+    hot_post_crawler.channel = client.get_channel(682788528983506953)
 
 
 @client.event
