@@ -8,6 +8,10 @@ from bs4 import BeautifulSoup
 from discord import DMChannel
 from dotenv import load_dotenv
 
+load_dotenv()
+
+client = discord.Client()
+
 
 class HotPostCrawler:
     run = False
@@ -61,10 +65,6 @@ class HotPostCrawler:
 
 
 hot_post_crawler = HotPostCrawler()
-
-load_dotenv()
-
-client = discord.Client()
 
 
 @client.event
