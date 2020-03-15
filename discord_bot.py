@@ -1,7 +1,5 @@
 import asyncio
 import os
-import threading
-import time
 
 import discord.utils
 import requests
@@ -12,7 +10,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 client = discord.Client()
-loop = asyncio.new_event_loop()
 
 
 class HotPostCrawler:
@@ -41,8 +38,6 @@ class HotPostCrawler:
 
     def start(self):
         self.run = True
-        self.trd = threading.Thread(target=self.update, args=[])
-        self.trd.setDaemon(True)
         self.trd.start()
         print('Start Crawling')
 
@@ -56,18 +51,16 @@ class HotPostCrawler:
             self.staged_link.append(pair['link'])
 
     def update(self):
-        while self.run:
-            for pair in HotPostCrawler.load():
-                if not (pair['link'] in self.staged_link):
-                    try:
-                        asyncio.run_coroutine_threadsafe(self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}'),
-                                                         loop)
-                        print(f'>>> {pair["title"]}\n {pair["link"]}')
-                        self.staged_link.append(pair['link'])
-                    except Exception as e:
-                        print(e)
+        for pair in HotPostCrawler.load():
+            if not (pair['link'] in self.staged_link):
+                try:
+                    await self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}')
+                    print(f'>>> {pair["title"]}\n {pair["link"]}')
+                    self.staged_link.append(pair['link'])
+                except Exception as e:
+                    print(e)
 
-            time.sleep(5)
+        asyncio.sleep(10)
 
 
 hot_post_crawler = HotPostCrawler()
@@ -131,6 +124,14 @@ async def on_message(msg: discord.Message):
                 await msg.channel.send(text + '입니다.')
 
 
+async def hot_post_crawler_loop():
+    await client.wait_until_ready()
+    while not client.is_closed():
+        if hot_post_crawler.run:
+            hot_post_crawler.update()
+
+
+client.loop.create_task(hot_post_crawler_loop())
 client.run(os.getenv('COVIDIC_BOT_TOKEN'))
 ''' 
 To-Do
