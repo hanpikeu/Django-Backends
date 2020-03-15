@@ -23,12 +23,14 @@ class HotPostCrawler:
     def load():
         res = requests.get('https://gall.dcinside.com/mgallery/board/lists?id=dngks&exception_mode=recommend',
                            headers={'User-Agent': 'PostmanRuntime/7.22.0'})
-        soup = BeautifulSoup(res.content)
+        soup = BeautifulSoup(res.content, features='html.parser')
         data = []
         for html in soup.find_all('td', attrs={'class': 'gall_tit'}):
-            pair = {'title': html.text,
-                    'link': html.find('a', attrs={'class': 'reply_numbox'}).replace('&amp;', '&').replace('&t=cv', '')}
-            data.append(pair)
+            link_node = html.find('a', attrs={'class': 'reply_numbox'})
+            if link_node is not None:
+                pair = {'title': html.text,
+                        'link': link_node['href'].replace('&amp;', '&').replace('&t=cv', '')}
+                data.append(pair)
         return data
 
     def start(self):
