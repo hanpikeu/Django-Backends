@@ -53,7 +53,7 @@ class HotPostCrawler:
         for pair in HotPostCrawler.load():
             self.staged_link.append(pair['link'])
 
-    async def update(self):
+    def update(self):
         while self.run:
             for pair in HotPostCrawler.load():
                 if not (pair['link'] in self.staged_link):
