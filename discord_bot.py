@@ -21,6 +21,7 @@ class HotPostCrawler:
     def __init__(self):
         self.trd = None
         self.stage()
+        self.start()
         self.channel = client.get_channel(682788528983506953)
 
     @staticmethod
