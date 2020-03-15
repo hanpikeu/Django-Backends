@@ -1,7 +1,7 @@
+import asyncio
 import os
 import threading
 import time
-
 import discord.utils
 import requests
 from bs4 import BeautifulSoup
@@ -53,18 +53,18 @@ class HotPostCrawler:
         for pair in HotPostCrawler.load():
             self.staged_link.append(pair['link'])
 
-    def update(self):
+    async def update(self):
         while self.run:
             for pair in HotPostCrawler.load():
                 if not (pair['link'] in self.staged_link):
                     try:
-                        await self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}')
+                        asyncio.run(self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}'))
                         print(f'>>> {pair["title"]}\n {pair["link"]}')
                         self.staged_link.append(pair['link'])
                     except Exception as e:
                         print(e)
 
-            time.sleep(6)
+            time.sleep(5)
 
 
 hot_post_crawler = HotPostCrawler()
