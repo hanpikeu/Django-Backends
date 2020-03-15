@@ -42,6 +42,7 @@ def webhook(req: HttpRequest):
             command = 'sudo bash service_manager/update_repo.sh'
             need_migrate = False
             need_update_discord = False
+            need_update_pip = False
 
             for commit in data["commits"]:
                 for new_file in commit["added"]:
@@ -50,6 +51,12 @@ def webhook(req: HttpRequest):
                 for change_file in commit["modified"]:
                     if change_file == 'discord_bot.py':
                         need_update_discord = True
+                for change_file in commit["modified"]:
+                    if change_file == 'requirements.txt':
+                        need_update_pip = True
+
+            if need_update_pip:
+                command += '-p'
 
             if need_migrate:
                 command += ' -m'

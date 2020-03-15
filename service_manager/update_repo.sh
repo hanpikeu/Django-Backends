@@ -7,6 +7,9 @@ arguments=( "${@}" )
 for argument in "${arguments[@]}"
 do
   case "${argument}" in
+    "-p")
+    bash service_manager/update_pip.sh
+    ;;
     "-m")
     bash service_manager/stop_django.sh
     bash service_manager/migrate_django.sh
