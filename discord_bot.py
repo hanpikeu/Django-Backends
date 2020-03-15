@@ -74,6 +74,7 @@ hot_post_crawler = HotPostCrawler()
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
     hot_post_crawler.channel = client.get_channel(682788528983506953)
+    hot_post_crawler.start()
 
 
 @client.event
