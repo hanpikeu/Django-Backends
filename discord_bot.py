@@ -50,7 +50,7 @@ class HotPostCrawler:
         for pair in HotPostCrawler.load():
             self.staged_link.append(pair['link'])
 
-    def update(self):
+    async def update(self):
         for pair in HotPostCrawler.load():
             if not (pair['link'] in self.staged_link):
                 try:
@@ -128,7 +128,7 @@ async def hot_post_crawler_loop():
     await client.wait_until_ready()
     while not client.is_closed():
         if hot_post_crawler.run:
-            hot_post_crawler.update()
+            await hot_post_crawler.update()
 
 
 client.loop.create_task(hot_post_crawler_loop())
