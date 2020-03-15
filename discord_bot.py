@@ -71,6 +71,7 @@ async def on_ready():
     print(f'{client.user} has connected to Discord!')
     hot_post_crawler.channel = client.get_channel(682788528983506953)
     hot_post_crawler.start()
+    client.loop.create_task(hot_post_crawler_loop())
 
 
 @client.event
@@ -125,13 +126,11 @@ async def on_message(msg: discord.Message):
 
 
 async def hot_post_crawler_loop():
-    await client.wait_until_ready()
     while not client.is_closed():
         if hot_post_crawler.run:
             await hot_post_crawler.update()
 
 
-client.loop.create_task(hot_post_crawler_loop())
 client.run(os.getenv('COVIDIC_BOT_TOKEN'))
 ''' 
 To-Do
