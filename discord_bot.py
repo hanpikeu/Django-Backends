@@ -21,7 +21,7 @@ class HotPostCrawler:
     def __init__(self):
         self.trd = None
         self.stage()
-        self.channel = client.get_channel(683302727912390770)
+        self.channel = client.get_channel(682788528983506953)
 
     @staticmethod
     def load():
@@ -42,10 +42,12 @@ class HotPostCrawler:
         self.trd = threading.Thread(target=self.update, args=[])
         self.trd.setDaemon(True)
         self.trd.start()
+        print('Start Crawling')
 
     def stop(self):
         self.run = False
         self.trd.join()
+        print('Stop Crawling')
 
     def stage(self):
         for pair in HotPostCrawler.load():
@@ -57,9 +59,10 @@ class HotPostCrawler:
                 if not (pair['link'] in self.staged_link):
                     try:
                         self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}')
+                        print(f'>>> {pair["title"]}\n {pair["link"]}')
                         self.staged_link.append(pair['link'])
-                    except:
-                        pass
+                    except Exception as e:
+                        print(e)
 
             time.sleep(6)
 
