@@ -2,6 +2,7 @@ import asyncio
 import os
 import threading
 import time
+
 import discord.utils
 import requests
 from bs4 import BeautifulSoup
@@ -11,6 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 client = discord.Client()
+loop = asyncio.new_event_loop()
 
 
 class HotPostCrawler:
@@ -58,7 +60,8 @@ class HotPostCrawler:
             for pair in HotPostCrawler.load():
                 if not (pair['link'] in self.staged_link):
                     try:
-                        asyncio.run_coroutine_threadsafe(self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}'))
+                        asyncio.run_coroutine_threadsafe(self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}'),
+                                                         loop)
                         print(f'>>> {pair["title"]}\n {pair["link"]}')
                         self.staged_link.append(pair['link'])
                     except Exception as e:
