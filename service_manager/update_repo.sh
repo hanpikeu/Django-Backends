@@ -13,7 +13,7 @@ do
     "-m")
     bash service_manager/stop_django.sh
     bash service_manager/migrate_django.sh
-    bash service_manager/stop_django.sh
+    bash service_manager/start_django.sh
     ;;
     "-d")
     bash service_manager/stop_discord_bot.sh
