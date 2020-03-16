@@ -23,16 +23,21 @@ class HotPostCrawler:
 
     @staticmethod
     def load():
-        res = requests.get('https://gall.dcinside.com/mgallery/board/lists?id=dngks&exception_mode=recommend',
-                           headers={'User-Agent': 'PostmanRuntime/7.22.0'})
-        soup = BeautifulSoup(res.content, features='html.parser')
-        data = []
-        for html in soup.find_all('td', attrs={'class': 'gall_tit'}):
-            link_node = html.find('a')
-            if link_node is not None:
-                pair = {'link': 'https://gall.dcinside.com/' + link_node['href'].replace('&amp;', '&')}
-                data.append(pair)
-        return data
+        while True:
+            try:
+                res = requests.get('https://gall.dcinside.com/mgallery/board/lists?id=dngks&exception_mode=recommend',
+                                   headers={'User-Agent': 'PostmanRuntime/7.22.0'})
+                soup = BeautifulSoup(res.content, features='html.parser')
+                data = []
+                for html in soup.find_all('td', attrs={'class': 'gall_tit'}):
+                    link_node = html.find('a')
+                    if link_node is not None:
+                        pair = {'link': 'https://gall.dcinside.com/' + link_node['href'].replace('&amp;', '&')}
+                        data.append(pair)
+                return data
+            except Exception as e:
+                print(e)
+                continue
 
     def start(self):
         self.run = True
