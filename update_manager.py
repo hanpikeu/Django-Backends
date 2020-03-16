@@ -56,7 +56,7 @@ def webhook(req: HttpRequest):
                         need_update_pip = True
 
             if need_update_pip:
-                command += '-p'
+                command += ' -p'
 
             if need_migrate:
                 command += ' -m'
