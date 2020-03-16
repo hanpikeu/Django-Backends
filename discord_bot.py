@@ -18,7 +18,6 @@ class HotPostCrawler:
     staged_link = []
 
     def __init__(self):
-        self.trd = None
         self.stage()
         self.channel = None
 
@@ -29,21 +28,18 @@ class HotPostCrawler:
         soup = BeautifulSoup(res.content, features='html.parser')
         data = []
         for html in soup.find_all('td', attrs={'class': 'gall_tit'}):
-            link_node = html.find('a', attrs={'class': 'reply_numbox'})
+            link_node = html.find('a')
             if link_node is not None:
-                pair = {'title': html.text,
-                        'link': link_node['href'].replace('&amp;', '&').replace('&t=cv', '')}
+                pair = {'link': link_node['href'].replace('&amp;', '&')}
                 data.append(pair)
         return data
 
     def start(self):
         self.run = True
-        self.trd.start()
         print('Start Crawling')
 
     def stop(self):
         self.run = False
-        self.trd.join()
         print('Stop Crawling')
 
     def stage(self):
@@ -51,11 +47,12 @@ class HotPostCrawler:
             self.staged_link.append(pair['link'])
 
     async def update(self):
+        print('Update Crawling')
         for pair in HotPostCrawler.load():
             if not (pair['link'] in self.staged_link):
                 try:
-                    await self.channel.send(f'>>> {pair["title"]}\n {pair["link"]}')
-                    print(f'>>> {pair["title"]}\n {pair["link"]}')
+                    await self.channel.send(f'>>> {pair["link"]}')
+                    print(f'>>> {pair["link"]}')
                     self.staged_link.append(pair['link'])
                 except Exception as e:
                     print(e)
@@ -132,7 +129,3 @@ async def hot_post_crawler_loop():
 
 
 client.run(os.getenv('COVIDIC_BOT_TOKEN'))
-''' 
-To-Do
-Add Notik Discord bot
-'''
