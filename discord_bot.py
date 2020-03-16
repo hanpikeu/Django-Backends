@@ -30,7 +30,7 @@ class HotPostCrawler:
         for html in soup.find_all('td', attrs={'class': 'gall_tit'}):
             link_node = html.find('a')
             if link_node is not None:
-                pair = {'link': link_node['href'].replace('&amp;', '&')}
+                pair = {'link': 'https://gall.dcinside.com/' + link_node['href'].replace('&amp;', '&')}
                 data.append(pair)
         return data
 
