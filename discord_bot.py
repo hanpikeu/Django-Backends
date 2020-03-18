@@ -48,18 +48,20 @@ class HotPostCrawler:
 
     def start(self):
         self.run = True
-        print('Start Crawling')
+        self.error_log_channel.channel.send('Start Crawling')
 
     def stop(self):
         self.run = False
-        print('Stop Crawling')
+        self.error_log_channel.channel.send('Stop Crawling')
 
     async def stage(self):
         data = await self.load()
+        self.error_log_channel.channel.send('Stage Crawling')
         for pair in data:
             self.staged_link.append(pair['link'])
 
     async def update(self):
+        self.error_log_channel.channel.send('Update Crawling')
         data = await self.load()
         for pair in data:
             if not (pair['link'] in self.staged_link):
