@@ -25,7 +25,12 @@ class HotPostCrawler:
     async def report_error(self, e):
         error = traceback.format_exc()
         error = error.replace(os.path.dirname(os.path.realpath(__file__)), ".") + '\n' + str(e)
-        await self.error_log_channel.send(f'>>> {error}')
+        while True:
+            try:
+                await self.error_log_channel.send(f'>>> {error}')
+                break
+            except:
+                pass
 
     async def load(self):
         while True:
