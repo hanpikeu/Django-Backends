@@ -10,17 +10,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-global error_log_channel
-error_log_channel = None
-
 client = discord.Client()
 
 
-async def report_error(e):
-    global error_log_channel
-    error = traceback.format_exc()
-    error = error.replace(os.path.dirname(os.path.realpath(__file__)), ".")
-    await error_log_channel.channel.send(f'>>> {error}')
 
 
 class HotPostCrawler:
@@ -29,10 +21,15 @@ class HotPostCrawler:
     staged_link = []
 
     def __init__(self):
-        self.channel = None
+        self.new_post_log_channel = None
+        self.error_log_channel = None
 
-    @staticmethod
-    async def load():
+    async def report_error(self, e):
+        error = traceback.format_exc()
+        error = error.replace(os.path.dirname(os.path.realpath(__file__)), ".") + '\n' + str(e)
+        await self.error_log_channel.channel.send(f'>>> {error}')
+
+    async def load(self):
         while True:
             try:
                 res = requests.get('https://gall.dcinside.com/mgallery/board/lists?id=dngks&exception_mode=recommend',
@@ -46,7 +43,7 @@ class HotPostCrawler:
                         data.append(pair)
                 return data
             except Exception as e:
-                await report_error(e)
+                await self.report_error(e)
                 await asyncio.sleep(10)
 
     def start(self):
@@ -67,11 +64,11 @@ class HotPostCrawler:
         for pair in data:
             if not (pair['link'] in self.staged_link):
                 try:
-                    await self.channel.send(f'>>> {pair["link"]}')
+                    await self.new_post_log_channel.send(f'>>> {pair["link"]}')
                     print(f'>>> {pair["link"]}')
                     self.staged_link.append(pair['link'])
                 except Exception as e:
-                    await report_error(e)
+                    await self.report_error(e)
 
         await asyncio.sleep(10)
 
@@ -81,10 +78,9 @@ hot_post_crawler = HotPostCrawler()
 
 @client.event
 async def on_ready():
-    global error_log_channel
     print(f'{client.user} has connected to Discord!')
-    hot_post_crawler.channel = client.get_channel(688934573668827171)
-    error_log_channel = client.get_channel(689662041753255959)
+    hot_post_crawler.new_post_log_channel = client.get_channel(688934573668827171)
+    hot_post_crawler.error_log_channel = client.get_channel(689662041753255959)
     hot_post_crawler.start()
     await hot_post_crawler.stage()
     client.loop.create_task(hot_post_crawler_loop())
@@ -112,7 +108,7 @@ async def on_message(msg: discord.Message):
                 except Exception as e:
                     text = '스테이지중 에러 발생 ' + str(e)
                     await msg.channel.send(text)
-                    await report_error(e)
+                    await hot_post_crawler.report_error(e)
             elif msg.content == '!념글크롤 시작':
                 if hot_post_crawler.run:
                     await msg.channel.send('이미 동작하고 있습니다.')
@@ -123,7 +119,7 @@ async def on_message(msg: discord.Message):
                     except Exception as e:
                         text = '시작중 에러 발생 ' + str(e)
                         await msg.channel.send(text)
-                        await report_error(e)
+                        await hot_post_crawler.report_error(e)
             elif msg.content == '!념글크롤 정지':
                 if hot_post_crawler.run:
                     try:
@@ -132,7 +128,7 @@ async def on_message(msg: discord.Message):
                     except Exception as e:
                         text = '정지중 에러 발생 ' + str(e)
                         await msg.channel.send(text)
-                        await report_error(e)
+                        await hot_post_crawler.report_error(e)
                 else:
                     await msg.channel.send('이미 정지 되었습니다.')
             elif msg.content == '!념글크롤 상태':
