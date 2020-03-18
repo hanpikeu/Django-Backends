@@ -65,7 +65,6 @@ class HotPostCrawler:
             if not (pair['link'] in self.staged_link):
                 try:
                     await self.new_post_log_channel.send(f'>>> {pair["link"]}')
-                    print(f'>>> {pair["link"]}')
                     self.staged_link.append(pair['link'])
                 except Exception as e:
                     await self.report_error(e)
@@ -78,7 +77,6 @@ hot_post_crawler = HotPostCrawler()
 
 @client.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord!')
     hot_post_crawler.new_post_log_channel = client.get_channel(688934573668827171)
     hot_post_crawler.error_log_channel = client.get_channel(689662041753255959)
     await hot_post_crawler.start()
