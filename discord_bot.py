@@ -44,13 +44,13 @@ class HotPostCrawler:
                 await self.report_error(e)
                 await asyncio.sleep(10)
 
-    def start(self):
+    async def start(self):
         self.run = True
-        self.error_log_channel.send('Start Crawling')
+        await self.error_log_channel.send('Start Crawling')
 
-    def stop(self):
+    async def stop(self):
         self.run = False
-        self.error_log_channel.send('Stop Crawling')
+        await self.error_log_channel.send('Stop Crawling')
 
     async def stage(self):
         data = await self.load()
@@ -81,7 +81,7 @@ async def on_ready():
     print(f'{client.user} has connected to Discord!')
     hot_post_crawler.new_post_log_channel = client.get_channel(688934573668827171)
     hot_post_crawler.error_log_channel = client.get_channel(689662041753255959)
-    hot_post_crawler.start()
+    await hot_post_crawler.start()
     await hot_post_crawler.stage()
     client.loop.create_task(hot_post_crawler_loop())
 
@@ -114,7 +114,7 @@ async def on_message(msg: discord.Message):
                     await msg.channel.send('이미 동작하고 있습니다.')
                 else:
                     try:
-                        hot_post_crawler.start()
+                        await hot_post_crawler.start()
                         await msg.channel.send('성공적으로 시작했습니다.')
                     except Exception as e:
                         text = '시작중 에러 발생 ' + str(e)
@@ -123,7 +123,7 @@ async def on_message(msg: discord.Message):
             elif msg.content == '!념글크롤 정지':
                 if hot_post_crawler.run:
                     try:
-                        hot_post_crawler.stop()
+                        await hot_post_crawler.stop()
                         await msg.channel.send('성공적으로 정지 했습니다.')
                     except Exception as e:
                         text = '정지중 에러 발생 ' + str(e)
