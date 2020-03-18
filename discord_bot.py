@@ -55,12 +55,12 @@ class HotPostCrawler:
         print('Stop Crawling')
 
     async def stage(self):
-        data = await HotPostCrawler.load()
+        data = await self.load()
         for pair in data:
             self.staged_link.append(pair['link'])
 
     async def update(self):
-        data = await HotPostCrawler.load()
+        data = await self.load()
         for pair in data:
             if not (pair['link'] in self.staged_link):
                 try:
