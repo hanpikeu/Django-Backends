@@ -80,6 +80,16 @@ class HotPostCrawler:
 hot_post_crawler = HotPostCrawler()
 
 
+async def hot_post_crawler_loop():
+    try:
+        while not client.is_closed():
+            if hot_post_crawler.run:
+                await hot_post_crawler.update()
+    except Exception as e:
+        hot_post_crawler.report_error(e)
+    hot_post_crawler.report_error('Loop End')
+
+
 @client.event
 async def on_ready():
     hot_post_crawler.new_post_log_channel = client.get_channel(688934573668827171)
@@ -141,12 +151,6 @@ async def on_message(msg: discord.Message):
                 else:
                     text += '정지중'
                 await msg.channel.send(text + '입니다.')
-
-
-async def hot_post_crawler_loop():
-    while not client.is_closed():
-        if hot_post_crawler.run:
-            await hot_post_crawler.update()
 
 
 client.run(os.getenv('COVIDIC_BOT_TOKEN'))
